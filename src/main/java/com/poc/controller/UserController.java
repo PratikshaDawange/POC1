@@ -7,7 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.poc.entities.UserAccount;
-import com.poc.exceptionhandling.ResourceNotFoundException;
 import com.poc.service.UserServiceI;
 
-@Validated
+
 @RestController
 public class UserController
 {
@@ -28,67 +27,76 @@ public class UserController
 	private UserServiceI userServiceI;
 	
 	@PostMapping(value="/registerUser")
-	public ResponseEntity<UserAccount> registerUser(@Valid @RequestBody UserAccount userAccount)
+	public ResponseEntity<?> registerUser(@Valid @RequestBody UserAccount userAccount, BindingResult result)
 	{
+		if (result.hasErrors()) 
+		{
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(result.getAllErrors());
+        }
 		
-		UserAccount user=userServiceI.registerUser(userAccount);
-		if(user!=null)
-		{
-			return new ResponseEntity<UserAccount> (user,HttpStatus.CREATED);
-		}
-		else
-		{
-			return new ResponseEntity<UserAccount> (user,HttpStatus.BAD_REQUEST);
-		}
+		UserAccount saveuser=userServiceI.registerUser(userAccount);
+        System.err.println(saveuser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saveuser);
+        
 	}
-	@PutMapping(value="/updateUser/{userId}")
-	public ResponseEntity<Integer> updateUser(@PathVariable Integer userId, @RequestBody UserAccount userAccount) throws ResourceNotFoundException
+	@PutMapping(value="/updateUser")
+	public ResponseEntity<?> updateUser(@Valid @RequestBody UserAccount userAccount, BindingResult result) 
 	{
-		Integer user= userServiceI.updateUser(userId, userAccount.getFname());
-		
-		if(user==null)
+		if (result.hasErrors())
 		{
-			throw new ResourceNotFoundException("No User Found For this Id: " +userId);
-		}
-		return new ResponseEntity<Integer>(user,HttpStatus.CREATED);
-	}
-	@GetMapping("/findByFnameLnamePincod/{fname}/{lname}/{userPincode}")
-	public ResponseEntity<List<UserAccount>> getUserByFnameOrLnameOrPincode(@PathVariable String fname, @PathVariable String lname,
-			@PathVariable Integer userPincode, @RequestBody UserAccount userAccount) throws ResourceNotFoundException
-	{
-		List<UserAccount> userlist= userServiceI.findUserByFirstNameOrLastNameOrUserPincode(fname, lname, userPincode);
-		  if (userlist.isEmpty()) {
-		      throw new ResourceNotFoundException("No user found: " + fname+" "+lname+" "+userPincode);
-		    }
-		return new ResponseEntity<List<UserAccount>>(userlist,HttpStatus.OK);
+			return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(result.getAllErrors());
+	    }
+	    UserAccount savedUser = userServiceI.registerUser(userAccount);
+	    System.err.println(userAccount);
+	    return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
 		
 	}
-	@GetMapping("/sortByDobDoj")
-	public ResponseEntity<List<UserAccount>> sortByDobDoj()
+	@GetMapping("/getUsers")
+	public ResponseEntity<List<UserAccount>> getUsers()
 	{
-		List<UserAccount> userlist= userServiceI.sortByDobAndDoj();
+	        List<UserAccount> userList = userServiceI.getUsers();
+	        System.err.println(userList);
+	        return ResponseEntity.status(HttpStatus.OK).body(userList);
+	}
+	@GetMapping("/findByFname/{fname}")
+	public ResponseEntity<List<UserAccount>> getUserByFname(@PathVariable String fname)
+	{
+		List<UserAccount> userlist= userServiceI.findUserByFirstName(fname);
+		 
+		  System.err.println(userlist);
+		return ResponseEntity.status(HttpStatus.OK).body(userlist);
 		
-		return new ResponseEntity<List<UserAccount>>(userlist,HttpStatus.OK);
+	}
+	 @GetMapping("/findByPincode/{userPincode}")
+	    public ResponseEntity<?> getUsersByPinCode(@PathVariable Integer userPincode) 
+	 {
+	        List<UserAccount> userList = userServiceI.findUserByPinCode(userPincode);
+	        System.err.println(userList);
+	        return ResponseEntity.status(HttpStatus.OK).body(userList);
+	 }
+
+	
+	 @GetMapping("/sortByDoj")
+	public ResponseEntity<?> sortByDobDoj()
+	{
+		List<UserAccount> userlist= userServiceI.getUsersOrderByDoj();
+		System.err.println(userlist);
+		return ResponseEntity.status(HttpStatus.OK).body(userlist);
 		
 	}
 	
-	@DeleteMapping(value="/deleteUserSoft/{userId}")
-	public ResponseEntity<Boolean> deleteUserSoft(@PathVariable Integer userId) throws ResourceNotFoundException
+	@DeleteMapping("/deleteUserSoft/{userId}")
+	public ResponseEntity<?> deleteUserSoft(@PathVariable Integer userId)
 	{
-		
 		Boolean user=userServiceI.deleteUserByIdSoft(userId);
-		return new ResponseEntity<Boolean> (user,HttpStatus.OK);
+		return ResponseEntity.ok(user);
 	}
+	
 	
 	@DeleteMapping("/deleteUserHard/{userId}")
-	public ResponseEntity<List<UserAccount>> deleteUserHard(@PathVariable Integer userId) throws ResourceNotFoundException
+	public ResponseEntity<?> deleteUserHard(@PathVariable Integer userId) 
 	{
 		List<UserAccount> userlist= userServiceI.deleteUserByIdHard(userId);
-									
-		
-		return new ResponseEntity<List<UserAccount>>(userlist,HttpStatus.OK);
-		
+		return ResponseEntity.status(HttpStatus.OK).body(userlist);
 	}
-	
-
 }

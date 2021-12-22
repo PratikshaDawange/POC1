@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserAccount.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">POCUserManagement</a> &gt; <a href="index.source.html" class="el_package">com.poc.entities</a> &gt; <span class="el_source">UserAccount.java</span></div><h1>UserAccount.java</h1><pre class="source lang-java linenums">package com.poc.entities;
+
+import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+<span class="fc" id="L20">@NoArgsConstructor</span>
+<span class="fc" id="L21">@AllArgsConstructor</span>
+<span class="pc bnc" id="L22" title="All 78 branches missed.">@Data</span>
+<span class="pc" id="L23">@Builder</span>
+@Entity
+@Table(name=&quot;USER_ACCOUNT&quot;)
+public class UserAccount 
+{
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name=&quot;USER_ID&quot;)
+<span class="nc" id="L31">	private Integer userId;</span>
+	
+	@NotNull
+	@Size(min = 3, message = &quot;name should have atleast 3 characters&quot;)
+	@Column(name=&quot;FIRST_NAME&quot;)
+<span class="fc" id="L36">	private String fname;</span>
+	
+	@NotNull
+	@Size(min = 3, message = &quot;name should have atleast 3 characters&quot;)
+	@Column(name=&quot;LAST_NAME&quot;)
+<span class="nc" id="L41">	private String lname;</span>
+	
+	@NotNull(message = &quot;Mobile Number is required.&quot;)
+	@Column(name=&quot;USER_MOBILE&quot;)
+<span class="nc" id="L45">	private Long phno;</span>
+	
+	
+	@NotNull(message = &quot;User Pincode is required.&quot;)
+	@Column(name=&quot;USER_PINCODE&quot;)
+<span class="nc" id="L50">	private Integer userPincode;</span>
+	
+	@NotNull(message = &quot;The date of birth is required.&quot;)
+	@Past
+	@Column(name=&quot;DOB&quot;)
+<span class="nc" id="L55">	private LocalDate dob;</span>
+	
+	@NotNull(message = &quot;Date of Joining is required.&quot;)
+	@Column(name=&quot;DOJ&quot;)
+<span class="nc" id="L59">	private LocalDate doj;</span>
+	
+	@NotEmpty(message = &quot;The gender is required.&quot;)
+	@Column(name=&quot;GENDER&quot;)
+<span class="nc" id="L63">	private String gender;</span>
+	
+	@Column(name=&quot;ACTIVE_SW&quot;)
+<span class="nc" id="L66">	private Boolean activeSw;</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

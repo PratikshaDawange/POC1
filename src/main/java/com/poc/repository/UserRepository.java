@@ -7,32 +7,27 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.poc.entities.UserAccount;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserAccount, Serializable>
 {
-	public List<UserAccount> findByFnameOrLnameOrUserPincode(String fname, String lname, Integer userPincode);
-	   
-	@Transactional
-	@Modifying
-	@Query(value="UPDATE  USER_ACCOUNT  SET FIRST_NAME =:fname WHERE USER_ID =:userId", nativeQuery = true)
-	public Integer updateUser(Integer userId, String fname);
-	@Transactional
-	@Modifying
-	@Query(value="SELECT * FROM USER_ACCOUNT ORDER BY dob ASC, doj ASC", nativeQuery= true)
-	List<UserAccount> findAllOrderByDobAscAndDojAsc();	
+	@Query("from UserAccount where activeSw = 1")
+	List<UserAccount> getAll();
 	
+	@Query("from UserAccount where activeSw = 1 and fname = ?1")
+	List<UserAccount> findByFname(String fname);
 	
-	/*@Transactional
-	@Query(value="UPDATE USER_ACCOUNT SET ACTIVE_SW =:false WHERE USER_ID =:userId",nativeQuery = true)
-	@Modifying
-	public Integer softDelete(Integer userId);*/
+	@Query("from UserAccount where activeSw = 1 and userPincode = ?1")
+	List<UserAccount> findByUserPincode(Integer userPincode);
 	
-	/*@Query(value="SELECT * FROM USER_ACCOUNT WHERE ACTIVE_SW =1",nativeQuery = true)
+	@Query("from UserAccount where activeSw = 1 order by doj desc")
+	List<UserAccount> getUsersOrderByDoj();
+	
 	@Modifying
-	public void softFindAll(UserAccount userAccount);*/
+	@Query("update UserAccount set activeSw = 1 where id = ?1")
+	boolean deleteUserSoft(Integer userId);
+		
+	
 
 }
