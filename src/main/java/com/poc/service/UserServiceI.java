@@ -9,7 +9,7 @@ public interface UserServiceI
 	UserAccount registerUser(UserAccount userAccount);
 	List<UserAccount> getUsers();
 	List<UserAccount> findUserByFirstName(String fname);
-	List<UserAccount> findUserByPinCode(Integer userPincode);
+	List<UserAccount> findUserByPinCode(String userPincode);
 	List<UserAccount> getUsersOrderByDoj();
 	Boolean deleteUserByIdSoft(Integer userId);
 	List<UserAccount> deleteUserByIdHard(Integer userId);

@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserServiceI
 		return userlist;
 	}
 	@Override
-	public List<UserAccount> findUserByPinCode(Integer userPincode) 
+	public List<UserAccount> findUserByPinCode(String userPincode) 
 	{
 
 		List<UserAccount> userlist= userRepo.findByUserPincode(userPincode);

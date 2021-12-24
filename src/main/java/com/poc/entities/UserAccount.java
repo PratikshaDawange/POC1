@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 public class UserAccount 
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="USER_ID", nullable = false)
 	private Integer userId;
 	
@@ -43,12 +43,12 @@ public class UserAccount
 	
 	@NotNull(message = "Mobile Number is required.")
 	@Column(name="USER_MOBILE")
-	private Long phno;
+	private String phno;
 	
 	
 	@NotNull(message = "User Pincode is required.")
 	@Column(name="USER_PINCODE")
-	private Integer userPincode;
+	private String userPincode;
 	
 	@NotNull(message = "The date of birth is required.")
 	@Past

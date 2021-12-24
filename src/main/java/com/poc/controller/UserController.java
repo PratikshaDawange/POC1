@@ -68,7 +68,7 @@ public class UserController
 		
 	}
 	 @GetMapping("/findByPincode/{userPincode}")
-	    public ResponseEntity<?> getUsersByPinCode(@PathVariable Integer userPincode) 
+	    public ResponseEntity<?> getUsersByPinCode(@PathVariable String userPincode) 
 	 {
 	        List<UserAccount> userList = userServiceI.findUserByPinCode(userPincode);
 	        System.err.println(userList);

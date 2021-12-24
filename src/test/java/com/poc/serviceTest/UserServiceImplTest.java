@@ -1,14 +1,14 @@
 package com.poc.serviceTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.isNull;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,11 +36,11 @@ public class UserServiceImplTest
                 .userId(1)
                 .fname("Pratiksha")
                 .lname("Pawar")
-                .phno(9604278841L)
+                .phno("9604278841")
                 .dob(LocalDate.of(1995,07,27))
                 .doj(LocalDate.of(2021,12,14))
                 .gender("Female")
-                .userPincode(422215)
+                .userPincode("422215")
                 .activeSw(true)
                 .build();
     
@@ -53,7 +53,8 @@ public class UserServiceImplTest
        Mockito.when(userServiceI.getUsers()).thenReturn(userList);
        Mockito.when(userServiceI.getUsersOrderByDoj()).thenReturn(userList);
        Mockito.when(userServiceI.findUserByFirstName("Prati")).thenReturn(userList);
-       Mockito.when(userServiceI.findUserByPinCode(422215)).thenReturn(userList);
+       Mockito.when(userServiceI.findUserByPinCode("422215")).thenReturn(userList);
+       
        
       // Mockito.when(userServiceI.deleteUserByIdHard(1)).thenReturn(isNull());
     }
@@ -65,11 +66,11 @@ public class UserServiceImplTest
 			    .userId(1)
                 .fname("Pratiksha")
                 .lname("Pawar")
-                .phno(9604278841L)
+                .phno("9604278841")
                 .dob(LocalDate.of(1995,07,27))
                 .doj(LocalDate.of(2021,12,14))
                 .gender("Female")
-                .userPincode(422215)
+                .userPincode("422215")
                 .activeSw(true)
                 .build();
 		 Mockito.when(userServiceI.registerUser(user)).thenReturn(user);
@@ -101,22 +102,25 @@ public class UserServiceImplTest
 	@Test
     void testFindUserByPinCode1()
 	{
-		List<UserAccount> userlist =  userRepository.findByUserPincode(422215);
+		List<UserAccount> userlist =  userRepository.findByUserPincode("422215");
         assertEquals(1, userlist.size());
     }
 	@Test
     void testFindUserByPinCode2()
 	{
-		List<UserAccount> userlist =  userRepository.findByUserPincode(422111);
+		List<UserAccount> userlist =  userRepository.findByUserPincode("422111");
         assertNotEquals(1, userlist.size());
     }
 	
 	/*@Test
 	void deleteUserByIdSoft()
 	{
-		UserAccount user = userRepository.findById(1).get();
-		user.setActiveSw(false);
-		userRepository.save(user);
+		
+		Mockito.when(userServiceI.deleteUserByIdSoft(1)).thenReturn(true);
+		
+		boolean user = userRepository.findById(1);
+		
+		int b=userRepository.deleteUserSoft(user);
 	}*/
 	
 	/*@Test

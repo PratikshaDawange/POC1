@@ -43,11 +43,11 @@ public class UserControllerTest
                 .userId(1)
                 .fname("Pratiksha")
                 .lname("Pawar")
-                .phno(9604278841L)
+                .phno("9604278841")
                 .dob(LocalDate.of(1995,07,27))
                 .doj(LocalDate.of(2021,12,14))
                 .gender("Female")
-                .userPincode(422215)
+                .userPincode("422215")
                 .activeSw(true)
                 .build();
     }
@@ -59,11 +59,11 @@ public class UserControllerTest
 				    //.userId(101)
 	                .fname("Pratiksha")
 	                .lname("Pawar")
-	                .phno(9604278841L)
+	                .phno("9604278841")
 	                .dob(LocalDate.of(1995,07,27))
 	                .doj(LocalDate.of(2021,12,14))
 	                .gender("Female")
-	                .userPincode(422215)
+	                .userPincode("422215")
 	                .activeSw(true)
 	                .build();
 		
@@ -78,11 +78,11 @@ public class UserControllerTest
                 .content("{\n" +
                 	    "  \"fname\": \"Pratiksha\",\n" +
                         "  \"lname\": \"Pawar\",\n" +
-                        "  \"phno\": 9604278841,\n" +
+                        "  \"phno\": \"9604278841\",\n" +
                         "  \"dob\": \"1995-07-27\",\n" +
                         "  \"doj\": \"2021-12-14\",\n" +
                         "  \"gender\": \"Female\",\n" +
-                        "  \"userPincode\": 422215,\n" +
+                        "  \"userPincode\": \"422215\",\n" +
                         "  \"activeSw\": true\n" +
                         "        }"))
                 .andExpect(MockMvcResultMatchers.status().isCreated());
@@ -94,11 +94,11 @@ public class UserControllerTest
                 .userId(1)
                 .fname("Pratiksha")
                 .lname("Pawar")
-                .phno(9604278841L)
+                .phno("9604278841")
                 .dob(LocalDate.of(1995,07,27))
                 .doj(LocalDate.of(2021,12,14))
                 .gender("Female")
-                .userPincode(422215)
+                .userPincode("422215")
                 .activeSw(true)
                 .build();
 		
@@ -112,11 +112,11 @@ public class UserControllerTest
                 		 "  \"id\": 1,\n" +
                          "  \"fname\": \"Priya\",\n" +
                          "  \"lname\": \"Patil\",\n" +
-                         "  \"phno\": 9604278841,\n" +
+                         "  \"phno\": \"9604278841\",\n" +
                          "  \"dob\": \"1995-07-27\",\n" +
                          "  \"doj\": \"2021-12-14\",\n" +
                          "  \"gender\": \"Female\",\n" +
-                         "  \"userPincode\": 422222,\n" +
+                         "  \"userPincode\":\" 422222\",\n" +
                          "  \"activeSw\": true\n" +
                          "  }"))
          .andExpect(MockMvcResultMatchers.status().isCreated());
@@ -150,7 +150,7 @@ public class UserControllerTest
 
 	    @Test
 	    void getUsersByPinCode() throws Exception {
-	        Mockito.when(userServiceI.findUserByPinCode(100001)).thenReturn(userList);
+	        Mockito.when(userServiceI.findUserByPinCode("100001")).thenReturn(userList);
 
 	        mockMvc.perform(MockMvcRequestBuilders
 	                        .get("/findByPincode/422215")
